@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on 08/09/2023
+Updated on 09/03/2024
 
 @author: Jared Revier
 
@@ -9,7 +10,6 @@ Data scrapper that can gather lap data from NASCAR Cup Series Race and
 create a .csv for each driver containing Lap Time, Lap Speed, Running Position
 """
 
-import json
 import requests
 import pandas as pd
 
@@ -26,22 +26,25 @@ else:
     print('Failed to respond')
 
 
-#creates a .csv for each driver with relevant data
+#construct dataframe using Pandas
 
 for i in range(len(PHX_S2023_lap_data['laps'][:])):
     driver_name = PHX_S2023_lap_data['laps'][i]['FullName']
     df = pd.DataFrame(PHX_S2023_lap_data['laps'][i]['Laps'])
     
-    
-    info_labels = pd.Series(PHX_S2023_lap_data['laps'][i].keys())
-    driver_info = pd.Series(PHX_S2023_lap_data['laps'][i])
-    
-    info_labels = info_labels.drop(index=5)
-    driver_info = driver_info.drop('Laps')
+   
+    driver_info = pd.DataFrame(PHX_S2023_lap_data['laps'][i])
 
+   
+    driver_info = driver_info.drop(columns='Laps')
+    driver_info = driver_info.drop(columns='RunningPos')
     
-    df = pd.concat([info_labels, driver_info, df])
-    csv_path = '/home/jrevier/PyCAR Data/' + driver_name + '_Phoenix_Spr2023_Laptimes.csv'
+    df = pd.concat([driver_info, df], axis=1)
+    df['LapTime'] = df['LapTime'].fillna(0)
+    
+#creates a .csv for each driver with relevant data
+    
+    csv_path = '/home/usr/PyCAR_Data/' + driver_name + '_Phoenix_Spr2023_Laptimes.csv'
     df.to_csv(csv_path, index=False,)
 
 

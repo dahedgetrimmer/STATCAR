@@ -2,7 +2,9 @@
 
 NASCAR Stat Project and Predictive Model
 
+
 Objective:
+
 1.) Use Python to gather historical driver and race data from NASCAR's race center API.
 
 2.) Prepare data for conversion into .csv file format using Python's Pandas library.

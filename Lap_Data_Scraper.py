@@ -7,7 +7,7 @@ Updated on 09/03/2024
 @author: Jared Revier
 
 Data scrapper that can gather lap data from NASCAR Cup Series Race and
-create a .csv for each driver containing Lap Time, Lap Speed, Running Position
+create a .csv for each driver containing Driver Data, Lap Times, Lap Speed, and Running Position
 """
 
 import requests
@@ -49,4 +49,5 @@ for i in range(len(PHX_S2023_lap_data['laps'][:])):
 
 
 print('SUCCESS')
+
 

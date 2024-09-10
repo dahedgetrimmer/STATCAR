@@ -1,3 +1,3 @@
-# PyCAR
+# STATCAR
 
-NASCAR Stat Project
+NASCAR Stat Project and Predictive Model using Machine Learning

@@ -44,7 +44,7 @@ for i in range(len(PHX_S2023_lap_data['laps'][:])):
     
 #creates a .csv for each driver with relevant data
     
-    csv_path = '/home/usr/PyCAR_Data/' + driver_name + '_Phoenix_Spr2023_Laptimes.csv'
+    csv_path = 'PATH_TO_DIR' + driver_name + '_Phoenix_Spr2023_Laptimes.csv'
     df.to_csv(csv_path, index=False,)
 
 

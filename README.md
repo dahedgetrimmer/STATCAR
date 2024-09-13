@@ -11,4 +11,4 @@ Objective:
 
 3.) Upload .csv files into a Microsoft SQL Server database as separate tables.
 
-4.) Development of ML Predictive model (model framework tbd)
+4.) Development of ML Predictive model (model framework tbd) 

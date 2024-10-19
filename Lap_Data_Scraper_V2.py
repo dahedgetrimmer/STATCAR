@@ -187,86 +187,91 @@ roster_df = create_roster(race_id, year)
 def driver_lapdata(raceinfo, lapdata):
     
     #need to make this loop through each driver in the race.
-    for i in range(len(lapdata['laps'])):
-        name = lapdata['laps'][i]['FullName']
-        #get the total laps ran in the race
-        racelength = raceinfo['weekend_race'][0]['actual_laps']
-        
-        #get the race id number
-        raceID = raceinfo['weekend_race'][0]['race_id']
-        
-        #create a series to represent the lap count
-        laps = pd.Series(np.array(range(racelength+1)), name='lap')
-        
-        #print(laps)
-        
-        
-        #create a series containing the race id number and driver id number.
-        #the number of rows will be: racelength + 1
-        
-        race_id = pd.Series(np.full((racelength+1), raceID), name='race_id')
-        
-        driverID = lapdata['laps'][i]['NASCARDriverID']
-        driver_id = pd.Series(np.full((racelength+1), driverID), name='driver_id')
-        
-        
-        '''
-        *************************************************************************
-        NOTE: The index of the driver id and lap_data variable call must be the 
-              same or the data will not match up with the correct driver!!!
-        *************************************************************************        
-        '''
-        
-        #need to drop the 'Lap' column from the df. If left in, concat would cause
-        #data types to change
-        lap_data = pd.DataFrame(lapdata['laps'][i]['Laps']) #READ THE NOTE ABOVE
-        lap_data = lap_data.drop(columns='Lap')
-        
-        #Is it working properly? Print the df
-        #print(lap_data)
-        
-        #if a driver DNF'd, the position data will be missing from the lap_data df
-        #after their last recorded lap (i.e. the data will be nan)
-        #replace nan and change data type to int
-        lap_data['RunningPos'] = lap_data['RunningPos'].fillna(0)
-        lap_data['RunningPos'] = lap_data['RunningPos'].astype(int)
-        
-        
-        #if the driver has DNF'd, change their position value to the last recorded position
-        #df.loc[row_indexer, "col"] = values to iterate through df rows
-        for j in range(len(lap_data['RunningPos'])):
-            if lap_data.loc[j, 'RunningPos'] == 0 and lap_data.loc[j-1, 'RunningPos'] > 0:
-                lap_data.loc[j, 'RunningPos'] = lap_data.loc[j-1, 'RunningPos']
-                #print(lap_data)
-        
-        #if the driver has DNF'd the LapTime and LapSpeed after their last recorded lap
-        #will be nan. Also, LapSpeed will be a str data type (not sure why)
-        #replace all nan from df and convert LapSpeed to float data type
-        lap_data['LapTime'] = lap_data['LapTime'].fillna(0.000)
-        lap_data['LapSpeed'] = lap_data['LapSpeed'].fillna(0.000)
-        lap_data['LapSpeed'] = lap_data['LapSpeed'].astype(float)
-        
-        #add the lap count column to the front of the df
-        #set df index as driver and race ID numbers
-        lap_data = pd.concat([race_id, driver_id, laps, lap_data], axis=1, join='outer')
-        
-        #clean up column names
-        lap_data.columns = [x.replace("LapTime", "lap_time").replace("LapSpeed", "lap_speed") \
-                            .replace("RunningPos", "running_pos")\
-                            for x in lap_data.columns]
-        
-        
-        
-        #Are you satisified with the final df?
-        #Check it out
-        print(lap_data)
-        
-        return lap_data, name
+
+    
+    #get the total laps ran in the race
+    racelength = raceinfo['weekend_race'][0]['actual_laps']
+    
+    #get the race id number
+    raceID = raceinfo['weekend_race'][0]['race_id']
+    
+    #create a series to represent the lap count
+    laps = pd.Series(np.array(range(racelength+1)), name='lap')
+    
+    #print(laps)
+    
+    
+    #create a series containing the race id number and driver id number.
+    #the number of rows will be: racelength + 1
+    
+    race_id = pd.Series(np.full((racelength+1), raceID), name='race_id')
+    
+    driverID = lapdata['laps'][35]['NASCARDriverID']
+    driver_id = pd.Series(np.full((racelength+1), driverID), name='driver_id')
+    
+    
+    '''
+    *************************************************************************
+    NOTE: The index of the driver id and lap_data variable call must be the 
+          same or the data will not match up with the correct driver!!!
+    *************************************************************************        
+    '''
+    
+    #need to drop the 'Lap' column from the df. If left in, concat would cause
+    #data types to change
+    lap_data = pd.DataFrame(lapdata['laps'][35]['Laps']) #READ THE NOTE ABOVE
+    lap_data = lap_data.drop(columns='Lap')
     
     
     
-driver_data, driver = driver_lapdata(raceinfo, lapdata)
-#print(driver_data)
+    lap_data = pd.concat([race_id, driver_id, laps, lap_data], axis=1)
+    
+    #Is it working properly? Print the df
+    #print(lap_data)
+    
+    #if a driver DNF'd, the position data will be missing from the lap_data df
+    #after their last recorded lap (i.e. the data will be nan)
+    #replace nan and change data type to int
+    lap_data['RunningPos'] = lap_data['RunningPos'].fillna(0)
+    lap_data['RunningPos'] = lap_data['RunningPos'].astype(int)
+    
+    
+    #if the driver has DNF'd, change their position value to the last recorded position
+    #df.loc[row_indexer, "col"] = values to iterate through df rows
+    for i in range(len(lap_data['RunningPos'])):
+        if lap_data.loc[i, 'RunningPos'] == 0 and lap_data.loc[i-1, 'RunningPos'] > 0:
+            lap_data.loc[i, 'RunningPos'] = lap_data.loc[i-1, 'RunningPos']
+            #print(lap_data)
+    
+    #if the driver has DNF'd the LapTime and LapSpeed after their last recorded lap
+    #will be nan. Also, LapSpeed will be a str data type (not sure why)
+    #replace all nan from df and convert LapSpeed to float data type
+    lap_data['LapTime'] = lap_data['LapTime'].fillna(0.000)
+    lap_data['LapSpeed'] = lap_data['LapSpeed'].fillna(0.000)
+    lap_data['LapSpeed'] = lap_data['LapSpeed'].astype(float)
+    
+    #add the lap count column to the front of the df
+    #set df index as driver and race ID numbers
+    
+    
+    #clean up column names
+    lap_data.columns = [x.replace("LapTime", "lap_time").replace("LapSpeed", "lap_speed") \
+                       .replace("RunningPos", "running_pos")\
+                        for x in lap_data.columns]
+
+    
+    
+    #Are you satisified with the final df?
+    #Check it out
+    
+    
+    
+    return lap_data
+    
+    
+    
+driver_data = driver_lapdata(raceinfo, lapdata)
+print(driver_data)
 
 
 

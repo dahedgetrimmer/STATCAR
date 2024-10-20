@@ -177,8 +177,8 @@ def race_df(raceinfo):
     #clean up the dates data
     race_info['race_date'] = [x.split("T")[0] for x in race_info['race_date']]
     
-    for i in range(len(race_info)):
-        print(race_info.iloc[i])
+    #for i in range(len(race_info)):
+    #    print(race_info.iloc[i])
     
     return race_info
 
@@ -341,3 +341,4 @@ for i in range(len(lapdata['laps'])):
     csv_path = dir_path + driver_name + '_' + race_season + '_' + race_name + '_lapdata.csv'
     driverdata_df.to_csv(csv_path, index=False) 
 
+print('DATA SCRAPE COMPLETED')

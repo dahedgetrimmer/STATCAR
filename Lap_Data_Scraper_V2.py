@@ -332,7 +332,7 @@ for i in range(len(lapdata['laps'])):
     race_season = raceinfo_df['race_season'].iloc[0].astype(str)
     
     #check if the directories exist, if not create them
-    dir_path = fr'C:\Users\dahed\Documents\Python\STATCAR\Cup_Season\{race_season}\{race_name}\\' 
+    dir_path = fr'PATH_TO_DIR\{race_season}\{race_name}\\' 
     
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)

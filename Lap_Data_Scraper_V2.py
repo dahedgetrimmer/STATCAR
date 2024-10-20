@@ -105,7 +105,6 @@ def racedata_scraper(race_id, year):
     lapdata_link = f'https://cf.nascar.com/cacher/{year}/1/{race_id}/lap-times.json' 
     raceinfo_link = f'https://cf.nascar.com/cacher/{year}/1/{race_id}/weekend-feed.json'
     
-    print(lapdata_link)
     time.sleep(1)
     
     lapdata_response = requests.get(lapdata_link)
@@ -216,8 +215,6 @@ def create_roster(race_id, year):
     #clean up the names in the driver_name column
     driver_roster['driver_name'] = [x.replace(" #","").replace(r" (P)","").replace(r"(i)","") \
                                     .replace(r"* ","") for x in driver_roster['driver_name']]
-    
-    #driver_roster.set_index(['driver_id', 'race_id'], inplace=True)
     
     print(driver_roster)
     

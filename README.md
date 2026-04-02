@@ -9,6 +9,6 @@ Objective:
 
 2.) Prepare data for conversion into .csv file format using Python's Pandas library.
 
-3.) Upload .csv files into a Microsoft SQL Server database as separate tables.
+3.) Upload .csv files into a PostgreSQL database running on Ubuntu Server Pro.
 
 4.) Development of ML Predictive model (model framework tbd) 
